@@ -32,8 +32,9 @@ Este projeto Infinite Termo é uma adaptação do Termo, desenvolvida por David 
     - Amarelo: Letra correta na posição errada.
     - Cinza: Letra não está na palavra.
 4. Continue tentando até adivinhar a palavra correta ou esgotar suas tentativas.
-5. Cada jogo é formado por 7 palavras de 5 letras cada (para o 'dueto', 2 palavras; para o 'quarteto', 4 palavras e 'termo', 1 palavra).
-6. Compartilhe seus resultados com amigos e desafie-os a jogar também!
+5. Se não conseguir adivinhar a palavra, a resposta correta será revelada após a última tentativa e uma opção para reiniciar o jogo estará disponível.
+6. Cada jogo é formado por 7 palavras de 5 letras cada (para o 'dueto', 2 palavras; para o 'quarteto', 4 palavras e 'termo', 1 palavra).
+7. Compartilhe seus resultados com amigos e desafie-os a jogar também!
 
 ## Processo de Seleção de Palavras
 
@@ -48,5 +49,7 @@ As palavras utilizadas no Infinite Termo são selecionadas a partir de um proces
 4. **Cruzamento de Listas**: Realizamos um cruzamento entre a lista (words/lexico.txt) e a lista filtrada por frequência (words/frequency_filtered.csv) para garantir que apenas palavras presentes em ambas as listas fossem mantidas. Um script Node.js foi usado para: (a) filtrar palavras de 5 letras de lexico.txt, criando um conjunto (Set); (b) ler frequency_filtered.csv e manter apenas palavras com frequência > 0.2278685218794112 que estejam no conjunto de lexico.txt; (c) salvar o resultado em playable_words.txt.
 
 5. **Remoção de Palavras Impróprias**: Excluímos termos considerados impróprios, vulgares ou ofensivos, utilizando uma lista de referência (words/negativas.txt). Um script Node.js leu negativas.txt para criar um conjunto de palavras proibidas, depois filtrou playable_words.txt removendo qualquer palavra presente nesse conjunto, atualizando o arquivo final.
+
+6. **Conversão de .txt para .json**: Para facilitar o uso no backend, convertimos a lista final de palavras elegíveis (playable_words.txt) para um formato JSON (playable_words.json), onde cada palavra é um item em um array. Isso foi feito usando um script Node.js que leu playable_words.txt, criou um array de palavras e salvou como playable_words.json.
 
 Após esses filtros, restam aproximadamente 1797 palavras elegíveis, selecionadas de forma ponderada pela frequência para priorizar termos mais comuns (words/playable_words.txt).
