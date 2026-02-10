@@ -52,4 +52,6 @@ As palavras utilizadas no Infinite Termo são selecionadas a partir de um proces
 
 6. **Conversão de .txt para .json**: Para facilitar o uso no backend, convertimos a lista final de palavras elegíveis (playable_words.txt) para um formato JSON (playable_words.json), onde cada palavra é um item em um array. Isso foi feito usando um script Node.js que leu playable_words.txt, criou um array de palavras e salvou como playable_words.json.
 
-Após esses filtros, restam aproximadamente 1797 palavras elegíveis, selecionadas de forma ponderada pela frequência para priorizar termos mais comuns (words/playable_words.txt).
+7. **Atualização Manual**: Após a filtragem automatizada, realizamos uma revisão manual para garantir que as palavras restantes fossem adequadas para o público-alvo do jogo, removendo quaisquer termos que pudessem ser considerados controversos, inadequados ou incomuns.
+
+Após esses filtros, restam aproximadamente 1511 palavras elegíveis, selecionadas de forma ponderada pela frequência para priorizar termos mais comuns (words/playable_words.txt).
