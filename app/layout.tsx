@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
-import { Dice1, Dice2, Dice4 } from "lucide-react";
+import { Dice1, Dice2, Dice4, Info } from "lucide-react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -41,6 +41,10 @@ export default function RootLayout({
                 <Link href="/quarteto" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
                   <Dice4 className="w-5 h-5 sm:w-6 sm:h-6" />
                   <span className="hidden sm:inline">Quarteto</span>
+                </Link>
+                <Link href="/sobre" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
+                  <Info className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="hidden sm:inline">Sobre</span>
                 </Link>
               </div>
             </nav>
