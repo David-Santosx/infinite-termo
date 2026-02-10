@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import { Container } from "@/components/ui/container";
 import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
+import { Dice1, Dice2, Dice4 } from "lucide-react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,19 +29,21 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <main className="w-full mx-auto h-screen flex flex-col">
             <nav className="w-full max-w-105 mx-auto py-4 px-2 sm:px-4 flex justify-center items-center">
-              <div className="space-x-4">
-                <Link href="/" className="text-sm sm:text-base hover:underline">
-                  Termo
+              <div className="flex space-x-2 sm:space-x-8">
+                <Link href="/" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
+                  <Dice1 className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="hidden sm:inline">Termo</span>
                 </Link>
-                <Link href="/dueto" className="text-sm sm:text-base hover:underline">
-                  Dueto
+                <Link href="/dueto" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
+                  <Dice2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="hidden sm:inline">Dueto</span>
                 </Link>
-                <Link href="/quarteto" className="text-sm sm:text-base hover:underline">
-                  Quarteto
+                <Link href="/quarteto" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
+                  <Dice4 className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="hidden sm:inline">Quarteto</span>
                 </Link>
               </div>
             </nav>
-            <Separator className="max-w-105 mx-auto my-2" />
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center pt-4 mb-4 sm:mb-6">Infinite Termo</h1>
             {children}
           </main>
