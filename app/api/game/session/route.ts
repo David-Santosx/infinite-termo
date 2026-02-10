@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
                     session.wins++;
                     // Limpar índices do jogo anterior
                     session.currentGameWordIndexes = undefined;
+                    session.currentGameAttempts = undefined;
                 }
                 break;
 
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
                 session.losses++;
                 // Limpar índices do jogo anterior
                 session.currentGameWordIndexes = undefined;
+                session.currentGameAttempts = undefined;
                 break;
 
             case 'reset':
@@ -61,6 +63,7 @@ export async function POST(request: NextRequest) {
                 session.wins = 0;
                 session.losses = 0;
                 session.currentGameWordIndexes = undefined;
+                session.currentGameAttempts = undefined;
                 break;
 
             default:

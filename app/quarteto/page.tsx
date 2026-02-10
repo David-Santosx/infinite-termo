@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 
 export default function Page() {
-    const { activeBoardIndex, activeRows, selectedColumns, selectTile, boards, handleKey, attempts, wordLength, words, boardStates, keyboardState, validationError, clearValidationError } = useGameLogic('termo');
+    const { activeBoardIndex, activeRows, selectedColumns, selectTile, boards, handleKey, attempts, wordLength, words, boardStates, keyboardState, validationError, clearValidationError } = useGameLogic('quarteto');
 
     return (
         <>

@@ -55,10 +55,17 @@ export async function GET(request: NextRequest) {
         let selectedIndexes: number[];
 
         if (session.currentGameWordIndexes &&
-            session.currentGameWordIndexes.length === wordCount) {
-            // Usar índices da sessão se existirem e tiverem o tamanho correto
+            session.currentGameWordIndexes.length === wordCount &&
+            session.currentLevel === mode) {
+            // Usar índices da sessão se existirem, tiverem o tamanho correto e for o mesmo modo
             selectedIndexes = session.currentGameWordIndexes;
             selectedWords = selectedIndexes.map(index => words[index]);
+            session.currentGameWords = selectedWords; // Sync words for saveSession
+            // Ensure attempts is initialized
+            if (!session.currentGameAttempts) {
+                session.currentGameAttempts = [];
+                await saveSession(session);
+            }
         } else {
             // Gerar novas palavras e salvar índices na sessão
             selectedIndexes = [];
@@ -68,6 +75,9 @@ export async function GET(request: NextRequest) {
             }
             selectedWords = selectedIndexes.map(index => words[index]);
             session.currentGameWordIndexes = selectedIndexes;
+            session.currentGameWords = selectedWords; // Sync words so saveSession doesn't overwrite indexes with stale data
+            session.currentGameAttempts = []; // Initialize attempts as empty array
+            session.currentLevel = mode; // Update current level
             await saveSession(session);
         }
 
