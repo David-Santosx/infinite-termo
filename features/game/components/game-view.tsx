@@ -1,5 +1,5 @@
 "use client";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { PublicBoard } from "@/features/game/contract";
 import { MODES } from "@/features/game/engine/modes";
@@ -11,19 +11,56 @@ import { Boards } from "./boards";
 import { CampaignHud } from "./campaign-hud";
 import { GameActions } from "./game-actions";
 import { Keyboard } from "./keyboard";
+import { ResultDialog } from "./result-dialog";
 
 const EMPTY_BOARD: PublicBoard = { rows: [], solved: false };
+const RESULT_DELAY_MS = 300;
 const BOTTOM_ROOM = "min-h-[11.75rem] sm:min-h-[12.5rem]";
 
 export function GameView({ mode }: { mode: PlayMode }) {
-  const { game, loadError, input, pending, revealingRow, shakeKey, announcement, finished, press, selectColumn, startNext, reload } =
-    useGame(mode);
+  const {
+    game,
+    loadError,
+    input,
+    pending,
+    revealingRow,
+    shakeKey,
+    announcement,
+    finished,
+    press,
+    selectColumn,
+    startNext,
+    reload,
+  } = useGame(mode);
   useKeyCommands(press, !!game && !finished);
+  const [resultOpen, setResultOpen] = useState(false);
+  const revealedThisSession = useRef(false);
+
+  useEffect(() => {
+    if (revealingRow !== null) revealedThisSession.current = true;
+  }, [revealingRow]);
+
+  useEffect(() => {
+    if (!finished) {
+      revealedThisSession.current = false;
+      return;
+    }
+    if (!revealedThisSession.current) return;
+    revealedThisSession.current = false;
+    const timer = setTimeout(() => setResultOpen(true), RESULT_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [finished]);
 
   const fallbackMode = MODES[mode === "campaign" ? "termo" : mode];
-  const skeleton = useMemo(() => Array.from({ length: fallbackMode.boards }, () => EMPTY_BOARD), [fallbackMode.boards]);
+  const skeleton = useMemo(
+    () => Array.from({ length: fallbackMode.boards }, () => EMPTY_BOARD),
+    [fallbackMode.boards],
+  );
   const boards = game?.boards ?? skeleton;
-  const statuses = useMemo(() => keyboardStatuses(boards, revealingRow ?? undefined), [boards, revealingRow]);
+  const statuses = useMemo(
+    () => keyboardStatuses(boards, revealingRow ?? undefined),
+    [boards, revealingRow],
+  );
 
   if (loadError && !game) {
     return (
@@ -40,7 +77,11 @@ export function GameView({ mode }: { mode: PlayMode }) {
         {announcement}
       </div>
       {mode === "campaign" &&
-        (game?.campaign ? <CampaignHud campaign={game.campaign} /> : <div className="h-9" aria-hidden />)}
+        (game?.campaign ? (
+          <CampaignHud campaign={game.campaign} />
+        ) : (
+          <div className="h-9" aria-hidden />
+        ))}
       <Boards
         boards={boards}
         maxAttempts={game?.maxAttempts ?? fallbackMode.maxAttempts}
@@ -52,11 +93,28 @@ export function GameView({ mode }: { mode: PlayMode }) {
       />
       <div className={`flex flex-col justify-end ${BOTTOM_ROOM}`}>
         {finished && game ? (
-          <GameActions game={game} onNext={startNext} />
+          <GameActions
+            game={game}
+            onNext={startNext}
+            onShowResult={() => setResultOpen(true)}
+          />
         ) : (
-          <Keyboard statuses={statuses} boards={boards.length} onCommand={press} disabled={!game || pending} />
+          <Keyboard
+            statuses={statuses}
+            boards={boards.length}
+            onCommand={press}
+            disabled={!game || pending}
+          />
         )}
       </div>
+      {game && finished && (
+        <ResultDialog
+          game={game}
+          open={resultOpen}
+          onOpenChange={setResultOpen}
+          onNext={startNext}
+        />
+      )}
     </>
   );
 }
