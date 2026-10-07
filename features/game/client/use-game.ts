@@ -14,8 +14,9 @@ const STATUS_LABEL = { correct: "correta", present: "em outra posição", absent
 
 function describeLastGuess(game: PublicGame): string {
   return game.boards
-    .filter((b) => b.rows.length === game.attemptsUsed)
-    .map((b, i) => {
+    .map((b, i) => ({ b, i }))
+    .filter(({ b }) => b.rows.length === game.attemptsUsed)
+    .map(({ b, i }) => {
       const row = b.rows[b.rows.length - 1];
       const letters = row.letters.map((l, j) => `${l} ${STATUS_LABEL[row.statuses[j]]}`).join(", ");
       return game.boards.length > 1 ? `Tabuleiro ${i + 1}: ${letters}` : letters;
@@ -34,6 +35,7 @@ export function useGame(mode: PlayMode) {
   const [revealingRow, setRevealingRow] = useState<number | null>(null);
   const [shakeKey, setShakeKey] = useState(0);
   const [announcement, setAnnouncement] = useState("");
+  const [starting, setStarting] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
@@ -82,7 +84,8 @@ export function useGame(mode: PlayMode) {
     setGame(result.game);
     dispatch({ type: "clear" });
     setRevealingRow(result.game.attemptsUsed - 1);
-    setAnnouncement(describeLastGuess(result.game));
+    const text = describeLastGuess(result.game);
+    setAnnouncement((prev) => (prev === text ? `${text}\u200b` : text));
   }, [game, pending, revealingRow, input, mode, reject]);
 
   const press = useCallback(
@@ -97,12 +100,15 @@ export function useGame(mode: PlayMode) {
   const selectColumn = useCallback((cursor: number) => dispatch({ type: "select", cursor }), []);
 
   const startNext = useCallback(async () => {
+    if (starting) return;
+    setStarting(true);
     const result = await postNewGame(mode);
+    setStarting(false);
     if (!result.ok) return void toast(result.message);
     dispatch({ type: "clear" });
     setAnnouncement("");
     setGame(result.game);
-  }, [mode]);
+  }, [mode, starting]);
 
   const reload = useCallback(() => setAttempt((n) => n + 1), []);
 

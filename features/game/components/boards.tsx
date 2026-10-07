@@ -42,12 +42,12 @@ function useElementSize<T extends HTMLElement>() {
   return [ref, size] as const;
 }
 
-function computeTile(width: number, height: number, count: number, maxAttempts: number) {
+function computeTile(width: number, height: number, count: number, maxAttempts: number, reserveAnswer: boolean) {
   const columns = count === 4 && width >= WIDE_QUARTETO ? 4 : Math.min(count, 2);
   const rows = Math.ceil(count / columns);
   const gap = count === 1 ? 5 : count === 2 ? 4 : 3;
   const boardWidth = (width - PADDING_X - (columns - 1) * GAP_X) / columns;
-  const boardHeight = (height - (rows - 1) * GAP_Y) / rows - (count > 1 ? ANSWER_ROOM : ANSWER_ROOM - 6);
+  const boardHeight = (height - (rows - 1) * GAP_Y) / rows - (reserveAnswer ? ANSWER_ROOM : 0);
   const byWidth = (boardWidth - (WORD_LENGTH - 1) * gap) / WORD_LENGTH;
   const byHeight = (boardHeight - (maxAttempts - 1) * gap) / maxAttempts;
   const tile = Math.floor(Math.min(byWidth, byHeight, MAX_TILE));
@@ -56,7 +56,7 @@ function computeTile(width: number, height: number, count: number, maxAttempts: 
 
 export function Boards({ boards, maxAttempts, status, input, revealingRow, shakeKey, onSelect }: BoardsProps) {
   const [ref, { width, height }] = useElementSize<HTMLDivElement>();
-  const { columns, gap, tile } = computeTile(width, height, boards.length, maxAttempts);
+  const { columns, gap, tile } = computeTile(width, height, boards.length, maxAttempts, status === "lost");
   const measured = width > 0 && height > 0;
 
   const style = {
@@ -69,7 +69,7 @@ export function Boards({ boards, maxAttempts, status, input, revealingRow, shake
   } as CSSProperties;
 
   return (
-    <div ref={ref} className="flex min-h-0 w-full flex-1 items-center justify-center overflow-hidden px-3">
+    <div ref={ref} className="mx-auto flex min-h-0 w-full max-w-4xl flex-1 items-center justify-center overflow-hidden px-3">
       <div className="grid justify-center" style={style}>
         {boards.map((board, i) => (
           <Board

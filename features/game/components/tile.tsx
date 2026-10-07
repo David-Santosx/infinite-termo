@@ -35,12 +35,12 @@ export function Tile({ letter, status, index, variant, selected, bounce, onSelec
       aria-label={label}
       aria-pressed={onSelect ? selected : undefined}
       onClick={onSelect}
+      onMouseDown={onSelect ? (e) => e.preventDefault() : undefined}
       onKeyDown={
         onSelect
           ? (e) => {
-              if (e.key === " " || (e.key === "Enter" && !e.defaultPrevented)) {
+              if (e.key === " ") {
                 e.preventDefault();
-                e.stopPropagation();
                 onSelect();
               }
             }

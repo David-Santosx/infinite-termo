@@ -29,7 +29,7 @@ export function Header() {
             <Settings />
           </Button>
         </div>
-        <Link href="/" className="font-display text-2xl uppercase tracking-[0.2em] sm:text-3xl">
+        <Link href="/" className="whitespace-nowrap font-display text-xl uppercase tracking-[0.1em] sm:text-3xl sm:tracking-[0.2em]">
           Infinite Termo
         </Link>
         <div className="flex items-center justify-end">
@@ -43,7 +43,7 @@ export function Header() {
           </Button>
         </div>
       </div>
-      <nav aria-label="Modos de jogo" className="mt-2 flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <nav aria-label="Modos de jogo" className="mt-2 flex justify-center gap-0.5 sm:gap-1">
         {TABS.map(({ href, label }) => {
           const active = pathname === href;
           return (
@@ -52,7 +52,7 @@ export function Header() {
               href={href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                "rounded-full px-3 py-1.5 sm:px-4 text-sm font-medium transition-colors",
                 active ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground",
               )}
             >
