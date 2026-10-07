@@ -110,23 +110,95 @@
   --tile-present: #85c0f9;
 }
 
-@keyframes tile-pop { 0% { transform: scale(1) } 40% { transform: scale(1.08) } 100% { transform: scale(1) } }
-@keyframes tile-flip {
-  0% { transform: rotateX(0); background-color: var(--tile-empty); border-color: var(--tile-border-filled); }
-  49% { background-color: var(--tile-empty); border-color: var(--tile-border-filled); }
-  50% { transform: rotateX(90deg); background-color: var(--tile-bg); border-color: var(--tile-bg); }
-  100% { transform: rotateX(0); background-color: var(--tile-bg); border-color: var(--tile-bg); }
+@keyframes tile-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
-@keyframes row-shake { 0%,100% { transform: translateX(0) } 20%,60% { transform: translateX(-6px) } 40%,80% { transform: translateX(6px) } }
-@keyframes tile-bounce { 0%,20% { transform: translateY(0) } 40% { transform: translateY(-18%) } 50% { transform: translateY(4%) } 60% { transform: translateY(-6%) } 80%,100% { transform: translateY(0) } }
+@keyframes tile-flip {
+  0% {
+    transform: rotateX(0);
+    background-color: var(--tile-empty);
+    border-color: var(--tile-border-filled);
+  }
+  49% {
+    background-color: var(--tile-empty);
+    border-color: var(--tile-border-filled);
+  }
+  50% {
+    transform: rotateX(90deg);
+    background-color: var(--tile-bg);
+    border-color: var(--tile-bg);
+  }
+  100% {
+    transform: rotateX(0);
+    background-color: var(--tile-bg);
+    border-color: var(--tile-bg);
+  }
+}
+@keyframes row-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+@keyframes tile-bounce {
+  0%,
+  20% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-18%);
+  }
+  50% {
+    transform: translateY(4%);
+  }
+  60% {
+    transform: translateY(-6%);
+  }
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+}
 
-@utility animate-tile-pop { animation: tile-pop 120ms ease-out; }
-@utility animate-tile-flip { animation: tile-flip 500ms ease-in-out both; animation-delay: calc(var(--tile-index, 0) * 250ms); }
-@utility animate-row-shake { animation: row-shake 400ms ease-in-out; }
-@utility animate-tile-bounce { animation: tile-bounce 800ms ease both; animation-delay: calc(var(--tile-index, 0) * 90ms); }
+@utility animate-tile-pop {
+  animation: tile-pop 120ms ease-out;
+}
+@utility animate-tile-flip {
+  animation: tile-flip 500ms ease-in-out both;
+  animation-delay: calc(var(--tile-index, 0) * 250ms);
+}
+@utility animate-row-shake {
+  animation: row-shake 400ms ease-in-out;
+}
+@utility animate-tile-bounce {
+  animation: tile-bounce 800ms ease both;
+  animation-delay: calc(var(--tile-index, 0) * 90ms);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
 }
 
 @layer base {
@@ -136,7 +208,8 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
-  html, body {
+  html,
+  body {
     height: 100%;
   }
   body {

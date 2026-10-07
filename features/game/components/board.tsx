@@ -22,7 +22,17 @@ interface BoardProps {
   total: number;
 }
 
-export function Board({ board, maxAttempts, status, input, revealingRow, shakeKey, onSelect, index, total }: BoardProps) {
+export function Board({
+  board,
+  maxAttempts,
+  status,
+  input,
+  revealingRow,
+  shakeKey,
+  onSelect,
+  index,
+  total,
+}: BoardProps) {
   const lastReveal = useRef(revealingRow);
   const [bounce, setBounce] = useState(false);
   const lastRow = board.rows.length - 1;
@@ -49,14 +59,20 @@ export function Board({ board, maxAttempts, status, input, revealingRow, shakeKe
       aria-label={total > 1 ? `Tabuleiro ${index + 1} de ${total}` : "Tabuleiro"}
       className={cn("flex flex-col items-center", ended && "opacity-90")}
     >
-      <div className="grid w-full gap-[var(--tile-gap,5px)]" style={{ gridTemplateRows: `repeat(${maxAttempts}, 1fr)` }}>
+      <div
+        className="grid w-full gap-[var(--tile-gap,5px)]"
+        style={{ gridTemplateRows: `repeat(${maxAttempts}, 1fr)` }}
+      >
         {Array.from({ length: maxAttempts }, (_, r) => {
           const row = board.rows[r];
           const active = playing && r === board.rows.length;
           return (
             <div
               key={active ? `active-${shakeKey}` : r}
-              className={cn("grid grid-cols-5 gap-[var(--tile-gap,5px)]", active && shakeKey > 0 && "animate-row-shake")}
+              className={cn(
+                "grid grid-cols-5 gap-[var(--tile-gap,5px)]",
+                active && shakeKey > 0 && "animate-row-shake",
+              )}
             >
               {Array.from({ length: WORD_LENGTH }, (_, c) => {
                 if (row) {
@@ -87,14 +103,25 @@ export function Board({ board, maxAttempts, status, input, revealingRow, shakeKe
                     />
                   );
                 }
-                return <Tile key={c} letter="" index={c} variant="empty" label={`Linha ${r + 1}, letra ${c + 1} vazia`} />;
+                return (
+                  <Tile
+                    key={c}
+                    letter=""
+                    index={c}
+                    variant="empty"
+                    label={`Linha ${r + 1}, letra ${c + 1} vazia`}
+                  />
+                );
               })}
             </div>
           );
         })}
       </div>
       {showAnswer && (
-        <p className="mt-1 font-display text-sm uppercase leading-none tracking-wider" aria-label={`Resposta: ${board.answer}`}>
+        <p
+          className="mt-1 font-display text-sm uppercase leading-none tracking-wider"
+          aria-label={`Resposta: ${board.answer}`}
+        >
           {board.answer}
         </p>
       )}

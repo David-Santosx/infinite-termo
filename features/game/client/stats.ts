@@ -54,7 +54,11 @@ export function recordGame(stats: Stats, game: PublicGame): Stats {
     return {
       ...stats,
       recorded,
-      campaign: { runs: stats.campaign.runs + 1, lastScore: score, best: Math.max(stats.campaign.best, score, game.campaign.best) },
+      campaign: {
+        runs: stats.campaign.runs + 1,
+        lastScore: score,
+        best: Math.max(stats.campaign.best, score, game.campaign.best),
+      },
     };
   }
 

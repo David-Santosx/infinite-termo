@@ -11,13 +11,7 @@ function Figure({ value, label }: { value: number | string; label: string }) {
   );
 }
 
-export function StatsSummary({
-  stats,
-  mode,
-}: {
-  stats: Stats;
-  mode: PlayMode;
-}) {
+export function StatsSummary({ stats, mode }: { stats: Stats; mode: PlayMode }) {
   if (mode === "campaign") {
     const { runs, best, lastScore } = stats.campaign;
     return (
@@ -31,9 +25,7 @@ export function StatsSummary({
 
   const s = stats.modes[mode];
   const max = Math.max(...s.distribution);
-  const description = s.distribution
-    .map((n, i) => `${i + 1} tentativa${i ? "s" : ""}: ${n}`)
-    .join(", ");
+  const description = s.distribution.map((n, i) => `${i + 1} tentativa${i ? "s" : ""}: ${n}`).join(", ");
 
   return (
     <div className="flex flex-col gap-4">
@@ -50,9 +42,7 @@ export function StatsSummary({
       >
         {s.distribution.map((n, i) => (
           <div key={i} className="flex items-center gap-2 text-sm" aria-hidden>
-            <span className="w-3 text-right text-muted-foreground">
-              {i + 1}
-            </span>
+            <span className="w-3 text-right text-muted-foreground">{i + 1}</span>
             <div
               className={`rounded-sm px-2 py-0.5 text-right font-sans font-semibold tabular-nums ${n > 0 && n === max ? "bg-tile-correct text-tile-text" : "bg-muted"}`}
               style={{ width: `${max ? Math.max(8, (n / max) * 100) : 8}%` }}

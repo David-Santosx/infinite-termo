@@ -1,5 +1,11 @@
 import { isPlayMode } from "@/features/game/engine/modes";
-import { errorResponse, gameResponse, readState, withErrorHandling, writeState } from "@/features/game/server/http";
+import {
+  errorResponse,
+  gameResponse,
+  readState,
+  withErrorHandling,
+  writeState,
+} from "@/features/game/server/http";
 import { getGame } from "@/features/game/server/service";
 
 export function GET(request: Request) {

@@ -1,0 +1,6 @@
+data/
+features/game/server/data/
+.next/
+package-lock.json
+.plans/
+.superpowers/

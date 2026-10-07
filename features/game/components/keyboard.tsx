@@ -9,7 +9,12 @@ const ROWS = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"] as const;
 const REGIONS: Record<number, string[]> = {
   1: ["inset-0"],
   2: ["inset-y-0 left-0 w-1/2", "inset-y-0 right-0 w-1/2"],
-  4: ["left-0 top-0 h-1/2 w-1/2", "right-0 top-0 h-1/2 w-1/2", "bottom-0 left-0 h-1/2 w-1/2", "bottom-0 right-0 h-1/2 w-1/2"],
+  4: [
+    "left-0 top-0 h-1/2 w-1/2",
+    "right-0 top-0 h-1/2 w-1/2",
+    "bottom-0 left-0 h-1/2 w-1/2",
+    "bottom-0 right-0 h-1/2 w-1/2",
+  ],
 };
 
 interface KeyboardProps {

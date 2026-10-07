@@ -57,10 +57,7 @@ export function GameView({ mode }: { mode: PlayMode }) {
     [fallbackMode.boards],
   );
   const boards = game?.boards ?? skeleton;
-  const statuses = useMemo(
-    () => keyboardStatuses(boards, revealingRow ?? undefined),
-    [boards, revealingRow],
-  );
+  const statuses = useMemo(() => keyboardStatuses(boards, revealingRow ?? undefined), [boards, revealingRow]);
 
   if (loadError && !game) {
     return (
@@ -77,11 +74,7 @@ export function GameView({ mode }: { mode: PlayMode }) {
         {announcement}
       </div>
       {mode === "campaign" &&
-        (game?.campaign ? (
-          <CampaignHud campaign={game.campaign} />
-        ) : (
-          <div className="h-9" aria-hidden />
-        ))}
+        (game?.campaign ? <CampaignHud campaign={game.campaign} /> : <div className="h-9" aria-hidden />)}
       <Boards
         boards={boards}
         maxAttempts={game?.maxAttempts ?? fallbackMode.maxAttempts}
@@ -93,11 +86,7 @@ export function GameView({ mode }: { mode: PlayMode }) {
       />
       <div className={`flex flex-col justify-end ${BOTTOM_ROOM}`}>
         {finished && game ? (
-          <GameActions
-            game={game}
-            onNext={startNext}
-            onShowResult={() => setResultOpen(true)}
-          />
+          <GameActions game={game} onNext={startNext} onShowResult={() => setResultOpen(true)} />
         ) : (
           <Keyboard
             statuses={statuses}
@@ -108,12 +97,7 @@ export function GameView({ mode }: { mode: PlayMode }) {
         )}
       </div>
       {game && finished && (
-        <ResultDialog
-          game={game}
-          open={resultOpen}
-          onOpenChange={setResultOpen}
-          onNext={startNext}
-        />
+        <ResultDialog game={game} open={resultOpen} onOpenChange={setResultOpen} onNext={startNext} />
       )}
     </>
   );

@@ -7,20 +7,9 @@ export const metadata: Metadata = { title: "Sobre" };
 
 const linkClass = "font-semibold underline underline-offset-2";
 
-function ExternalLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={linkClass}
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
       {children}
     </a>
   );
@@ -41,13 +30,9 @@ export default function SobrePage() {
           />
           <h1 className="font-display text-2xl">Feito por David Santos</h1>
           <p>
-            O <ExternalLink href="https://term.ooo">Termo</ExternalLink> foi
-            criado por{" "}
-            <ExternalLink href="https://fserb.com">
-              Fernando Serboncini
-            </ExternalLink>{" "}
-            a partir do Wordle de Josh Wardle. Esta versão remove o limite
-            diário e adiciona Dueto, Quarteto e Campanha.
+            O <ExternalLink href="https://term.ooo">Termo</ExternalLink> foi criado por{" "}
+            <ExternalLink href="https://fserb.com">Fernando Serboncini</ExternalLink> a partir do Wordle de
+            Josh Wardle. Esta versão remove o limite diário e adiciona Dueto, Quarteto e Campanha.
           </p>
         </section>
 
@@ -62,11 +47,7 @@ export default function SobrePage() {
             </a>
           </Button>
           <Button asChild variant="outline">
-            <a
-              href="https://instagram.com/leao.willians"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://instagram.com/leao.willians" target="_blank" rel="noopener noreferrer">
               <Instagram /> Instagram
             </a>
           </Button>
@@ -75,18 +56,13 @@ export default function SobrePage() {
         <section className="space-y-2">
           <h2 className="font-display text-lg">Palavras</h2>
           <p>
-            As respostas vêm de uma lista curada de ~1.500 palavras comuns;
-            palpites aceitam todo o léxico pt-br de 5 letras.
+            As respostas vêm de uma lista curada de ~1.500 palavras comuns; palpites aceitam todo o léxico
+            pt-br de 5 letras.
           </p>
           <p>
             Créditos: léxico pt-br (
-            <ExternalLink href="https://github.com/fserb/pt-br">
-              github.com/fserb/pt-br
-            </ExternalLink>
-            ) e verbete (
-            <ExternalLink href="https://github.com/csamuelsm">
-              github.com/csamuelsm
-            </ExternalLink>
+            <ExternalLink href="https://github.com/fserb/pt-br">github.com/fserb/pt-br</ExternalLink>) e
+            verbete (<ExternalLink href="https://github.com/csamuelsm">github.com/csamuelsm</ExternalLink>
             ).
           </p>
         </section>
@@ -94,15 +70,13 @@ export default function SobrePage() {
         <section className="space-y-2">
           <h2 className="font-display text-lg">Privacidade</h2>
           <p>
-            Nenhum dado pessoal é coletado. O jogo em andamento fica em um
-            cookie criptografado no seu navegador, usado apenas para validar
-            palpites; suas estatísticas ficam salvas só no seu dispositivo.
+            Nenhum dado pessoal é coletado. O jogo em andamento fica em um cookie criptografado no seu
+            navegador, usado apenas para validar palpites; suas estatísticas ficam salvas só no seu
+            dispositivo.
           </p>
         </section>
 
-        <footer className="pt-2 text-center text-muted-foreground">
-          © 2026 David Santos
-        </footer>
+        <footer className="pt-2 text-center text-muted-foreground">© 2026 David Santos</footer>
       </div>
     </div>
   );

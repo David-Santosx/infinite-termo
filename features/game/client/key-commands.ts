@@ -13,7 +13,12 @@ const NAMED: Record<string, KeyCommand> = {
   End: { type: "end" },
 };
 
-export function mapKeyEvent(e: { key: string; ctrlKey: boolean; metaKey: boolean; altKey: boolean }): KeyCommand | null {
+export function mapKeyEvent(e: {
+  key: string;
+  ctrlKey: boolean;
+  metaKey: boolean;
+  altKey: boolean;
+}): KeyCommand | null {
   if (e.ctrlKey || e.metaKey || e.altKey) return null;
   if (e.key in NAMED) return NAMED[e.key];
   if (e.key.length !== 1) return null;

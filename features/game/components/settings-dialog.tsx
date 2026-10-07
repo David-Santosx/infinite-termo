@@ -1,12 +1,6 @@
 "use client";
 import { useTheme } from "next-themes";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useHighContrast } from "@/features/game/client/settings";
@@ -55,10 +49,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
               <label htmlFor="high-contrast" className="text-sm font-medium">
                 Alto contraste
               </label>
-              <span
-                id="high-contrast-hint"
-                className="text-sm text-muted-foreground"
-              >
+              <span id="high-contrast-hint" className="text-sm text-muted-foreground">
                 Cores laranja e azul, melhores para daltonismo.
               </span>
             </div>

@@ -115,5 +115,18 @@ export function useGame(mode: PlayMode) {
 
   const reload = useCallback(() => setReloadKey((n) => n + 1), []);
 
-  return { game, loadError, input, pending, revealingRow, shakeKey, announcement, finished, press, selectColumn, startNext, reload };
+  return {
+    game,
+    loadError,
+    input,
+    pending,
+    revealingRow,
+    shakeKey,
+    announcement,
+    finished,
+    press,
+    selectColumn,
+    startNext,
+    reload,
+  };
 }

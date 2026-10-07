@@ -21,7 +21,8 @@ describe("http", () => {
   });
 
   describe("isTrustedJsonRequest", () => {
-    const req = (headers: Record<string, string>) => new Request("http://localhost/api", { method: "POST", headers });
+    const req = (headers: Record<string, string>) =>
+      new Request("http://localhost/api", { method: "POST", headers });
 
     it("accepts JSON requests", () => {
       expect(isTrustedJsonRequest(req({ "content-type": "application/json" }))).toBe(true);

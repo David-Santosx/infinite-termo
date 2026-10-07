@@ -2,13 +2,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useHighContrast } from "@/features/game/client/settings";
 import { buildShareText, shareResult } from "@/features/game/client/share";
 import { loadStats } from "@/features/game/client/stats";
@@ -33,11 +27,7 @@ function titleFor(game: PublicGame) {
   return game.mode === "campaign" ? "Fim da campanha" : "Não foi dessa vez";
 }
 
-function ResultBody({
-  game,
-  onOpenChange,
-  onNext,
-}: Omit<ResultDialogProps, "open">) {
+function ResultBody({ game, onOpenChange, onNext }: Omit<ResultDialogProps, "open">) {
   const [stats] = useState(loadStats);
   const [highContrast] = useHighContrast();
 
@@ -91,12 +81,7 @@ function ResultBody({
   );
 }
 
-export function ResultDialog({
-  game,
-  open,
-  onOpenChange,
-  onNext,
-}: ResultDialogProps) {
+export function ResultDialog({ game, open, onOpenChange, onNext }: ResultDialogProps) {
   const plural = game.boards.length > 1;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -105,8 +90,12 @@ export function ResultDialog({
           <DialogTitle>{titleFor(game)}</DialogTitle>
           <DialogDescription>
             {game.status === "won"
-              ? plural ? "Você acertou as palavras." : "Você acertou a palavra."
-              : plural ? "As respostas eram:" : "A resposta era:"}
+              ? plural
+                ? "Você acertou as palavras."
+                : "Você acertou a palavra."
+              : plural
+                ? "As respostas eram:"
+                : "A resposta era:"}
           </DialogDescription>
         </DialogHeader>
         <ResultBody game={game} onOpenChange={onOpenChange} onNext={onNext} />

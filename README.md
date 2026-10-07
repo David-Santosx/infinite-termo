@@ -37,11 +37,11 @@ features/game/components  --->  features/game/client
 
 ### API
 
-| Método | Rota | Corpo | Resposta |
-| --- | --- | --- | --- |
-| GET | `/api/game?mode=<modo>` | nenhum | `PublicGame` da partida atual; cria uma se não existir |
-| POST | `/api/game/guess` | `{ "mode": "<modo>", "guess": "<palavra>" }` | `PublicGame` atualizado |
-| POST | `/api/game/new` | `{ "mode": "<modo>" }` | `PublicGame` de uma nova partida |
+| Método | Rota                    | Corpo                                        | Resposta                                               |
+| ------ | ----------------------- | -------------------------------------------- | ------------------------------------------------------ |
+| GET    | `/api/game?mode=<modo>` | nenhum                                       | `PublicGame` da partida atual; cria uma se não existir |
+| POST   | `/api/game/guess`       | `{ "mode": "<modo>", "guess": "<palavra>" }` | `PublicGame` atualizado                                |
+| POST   | `/api/game/new`         | `{ "mode": "<modo>" }`                       | `PublicGame` de uma nova partida                       |
 
 `<modo>` é `campaign`, `termo`, `dueto` ou `quarteto`. Erros retornam `{ "error": { "code", "message" } }`: 400 para requisição inválida, 409 se iniciar partida com outra em andamento ou palpitar em uma terminada, 422 para palpite inválido (tamanho, fora do dicionário ou repetido) e 500 para falhas internas. As respostas usam `Cache-Control: no-store`.
 
@@ -70,14 +70,14 @@ npm run dev
 
 Em desenvolvimento, sem `GAME_SECRET`, é usada uma chave fixa insegura. Em produção a variável é obrigatória: sem `GAME_SECRET`, as páginas renderizam, mas as chamadas à API retornam 500.
 
-| Script | O que faz |
-| --- | --- |
-| `npm run dev` | servidor de desenvolvimento |
-| `npm run build` / `npm start` | build e servidor de produção |
-| `npm test` | testes com Vitest |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run words` | regenera as listas de palavras |
+| Script                        | O que faz                      |
+| ----------------------------- | ------------------------------ |
+| `npm run dev`                 | servidor de desenvolvimento    |
+| `npm run build` / `npm start` | build e servidor de produção   |
+| `npm test`                    | testes com Vitest              |
+| `npm run lint`                | ESLint                         |
+| `npm run typecheck`           | `tsc --noEmit`                 |
+| `npm run words`               | regenera as listas de palavras |
 
 ### Deploy
 

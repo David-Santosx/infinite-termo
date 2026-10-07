@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { applyGuess, boardGuesses, createGame, isBoardSolved } from "./game";
 import type { Dictionary, Game } from "./types";
 
-const dictionary: Dictionary = { has: (w) => ["termo", "metro", "aviao", "forca", "nobre", "sutil", "fosco", "lugar", "pente"].includes(w) };
+const dictionary: Dictionary = {
+  has: (w) => ["termo", "metro", "aviao", "forca", "nobre", "sutil", "fosco", "lugar", "pente"].includes(w),
+};
 
 function play(game: Game, ...words: string[]) {
   return words.reduce((g, w) => {

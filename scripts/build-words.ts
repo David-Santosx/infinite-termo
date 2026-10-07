@@ -44,7 +44,10 @@ export function buildWordLists({ answers, lexicon, banned }: Input) {
 }
 
 function readList(path: string) {
-  return readFileSync(path, "utf8").split("\n").map((l) => l.trim()).filter(Boolean);
+  return readFileSync(path, "utf8")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

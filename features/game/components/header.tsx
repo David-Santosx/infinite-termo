@@ -51,12 +51,7 @@ export function Header() {
     <header className="mx-auto w-full max-w-xl px-3 pt-2">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center">
         <div className="flex items-center justify-start">
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Como jogar"
-            onClick={() => setDialog("help")}
-          >
+          <Button variant="ghost" size="icon" aria-label="Como jogar" onClick={() => setDialog("help")}>
             <CircleHelp />
           </Button>
           <Button
@@ -75,12 +70,7 @@ export function Header() {
           Infinite Termo
         </Link>
         <div className="flex items-center justify-end">
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Estatísticas"
-            onClick={() => setDialog("stats")}
-          >
+          <Button variant="ghost" size="icon" aria-label="Estatísticas" onClick={() => setDialog("stats")}>
             <ChartColumn />
           </Button>
           <Button variant="ghost" size="icon" aria-label="Sobre" asChild>
@@ -90,10 +80,7 @@ export function Header() {
           </Button>
         </div>
       </div>
-      <nav
-        aria-label="Modos de jogo"
-        className="mt-2 flex justify-center gap-0.5 sm:gap-1"
-      >
+      <nav aria-label="Modos de jogo" className="mt-2 flex justify-center gap-0.5 sm:gap-1">
         {TABS.map(({ href, label }) => {
           const active = pathname === href;
           return (
@@ -103,9 +90,7 @@ export function Header() {
               aria-current={active ? "page" : undefined}
               className={cn(
                 "rounded-full px-3 py-1.5 sm:px-4 text-sm font-medium transition-colors",
-                active
-                  ? "bg-secondary text-foreground"
-                  : "text-muted-foreground hover:text-foreground",
+                active ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground",
               )}
             >
               {label}
@@ -114,10 +99,7 @@ export function Header() {
         })}
       </nav>
       <HelpDialog {...dialogProps("help")} />
-      <StatsDialog
-        {...dialogProps("stats")}
-        initialMode={PATH_MODES[pathname] ?? "campaign"}
-      />
+      <StatsDialog {...dialogProps("stats")} initialMode={PATH_MODES[pathname] ?? "campaign"} />
       <SettingsDialog {...dialogProps("settings")} />
     </header>
   );

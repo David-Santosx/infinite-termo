@@ -4,7 +4,8 @@ import {
   errorResponse,
   gameResponse,
   isTrustedJsonRequest,
-  readState, withErrorHandling,
+  readState,
+  withErrorHandling,
   writeState,
 } from "@/features/game/server/http";
 import { startNewGame } from "@/features/game/server/service";

@@ -14,7 +14,8 @@ export function useKeyCommands(onCommand: (command: KeyCommand) => void, enabled
       if (document.querySelector("[role='dialog']")) return;
       const command = mapKeyEvent(event);
       if (!command) return;
-      if (command.type === "enter" && event.target instanceof Element && event.target.closest(ACTIVATABLE)) return;
+      if (command.type === "enter" && event.target instanceof Element && event.target.closest(ACTIVATABLE))
+        return;
       event.preventDefault();
       onCommand(command);
     };

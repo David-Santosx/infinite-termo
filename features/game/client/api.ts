@@ -18,7 +18,11 @@ async function request(input: string, init?: RequestInit): Promise<ApiResult> {
 }
 
 const post = (path: string, body: unknown) =>
-  request(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  request(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 
 export const fetchGame = (mode: PlayMode) => request(`/api/game?mode=${mode}`);
 export const postGuess = (mode: PlayMode, guess: string) => post("/api/game/guess", { mode, guess });

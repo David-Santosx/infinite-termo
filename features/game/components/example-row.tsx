@@ -2,7 +2,6 @@ import { STATUS_LABEL } from "@/features/game/client/labels";
 import type { TileStatus } from "@/features/game/engine/types";
 import { Tile } from "./tile";
 
-
 interface ExampleRowProps {
   word: string;
   statuses: (TileStatus | undefined)[];

@@ -20,8 +20,7 @@ export interface ServiceDeps {
 }
 
 export type ServiceResult =
-  | { ok: true; state: GameState; game: PublicGame }
-  | { ok: false; error: GameErrorCode };
+  { ok: true; state: GameState; game: PublicGame } | { ok: false; error: GameErrorCode };
 
 const toLetters = (word: string) => Array.from(displayWord(word).toUpperCase());
 
