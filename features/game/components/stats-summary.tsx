@@ -5,7 +5,7 @@ import type { PlayMode } from "@/features/game/engine/types";
 function Figure({ value, label }: { value: number | string; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="font-display text-3xl">{value}</span>
+      <span className="font-sans text-3xl font-semibold tabular-nums">{value}</span>
       <span className="text-center text-xs text-muted-foreground">{label}</span>
     </div>
   );
@@ -54,7 +54,7 @@ export function StatsSummary({
               {i + 1}
             </span>
             <div
-              className={`rounded-sm px-2 py-0.5 text-right font-medium ${n > 0 && n === max ? "bg-tile-correct text-tile-text" : "bg-muted"}`}
+              className={`rounded-sm px-2 py-0.5 text-right font-sans font-semibold tabular-nums ${n > 0 && n === max ? "bg-tile-correct text-tile-text" : "bg-muted"}`}
               style={{ width: `${max ? Math.max(8, (n / max) * 100) : 8}%` }}
             >
               {n}
