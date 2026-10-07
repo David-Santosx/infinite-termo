@@ -1,19 +1,36 @@
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Mitr } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
-import Link from "next/link";
-import { Dice1, Dice2, Dice4, Info } from "lucide-react";
+import { Providers } from "@/components/providers";
+import { Header } from "@/features/game/components/header";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-poppins",
-});
+const mitr = Mitr({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-mitr" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
+const description =
+  "Termo sem limite diário: adivinhe palavras em português quantas vezes quiser, nos modos Termo, Dueto, Quarteto e Campanha.";
 
 export const metadata: Metadata = {
-  title: "Infinite Termo - Uma versão infinita do jogo.",
-  description: "Quer jogar Termo sem ter que esperar por palavra? Experimente o Infinite Termo!",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  title: { default: "Infinite Termo", template: "%s · Infinite Termo" },
+  description,
+  applicationName: "Infinite Termo",
+  openGraph: {
+    title: "Infinite Termo",
+    description,
+    locale: "pt_BR",
+    type: "website",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#6e5c62" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f4f5" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({
@@ -23,35 +40,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} ${poppins.className} antialiased`}
-      >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className="w-full mx-auto h-screen flex flex-col">
-            <nav className="w-full max-w-105 mx-auto py-4 px-2 sm:px-4 flex justify-center items-center">
-              <div className="flex space-x-2 sm:space-x-8">
-                <Link href="/" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
-                  <Dice1 className="w-5 h-5 sm:w-6 sm:h-6" />
-                  <span className="hidden sm:inline">Termo</span>
-                </Link>
-                <Link href="/dueto" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
-                  <Dice2 className="w-5 h-5 sm:w-6 sm:h-6" />
-                  <span className="hidden sm:inline">Dueto</span>
-                </Link>
-                <Link href="/quarteto" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
-                  <Dice4 className="w-5 h-5 sm:w-6 sm:h-6" />
-                  <span className="hidden sm:inline">Quarteto</span>
-                </Link>
-                <Link href="/sobre" className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base hover:underline transition-colors">
-                  <Info className="w-5 h-5 sm:w-6 sm:h-6" />
-                  <span className="hidden sm:inline">Sobre</span>
-                </Link>
-              </div>
-            </nav>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center pt-4 mb-4 sm:mb-6">Infinite Termo</h1>
-            {children}
-          </main>
-        </ThemeProvider>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(JSON.parse(localStorage.getItem("it_high_contrast")))document.documentElement.setAttribute("data-contrast","high")}catch(e){}`,
+          }}
+        />
+      </head>
+      <body className={`${mitr.variable} ${inter.variable} antialiased`}>
+        <Providers>
+          <div className="flex h-dvh flex-col">
+            <Header />
+            <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+          </div>
+        </Providers>
       </body>
     </html>
   );
