@@ -1,12 +1,10 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { WORD_LENGTH } from "@/features/game/engine/modes";
+import { normalize } from "@/features/game/engine/normalize";
 
-const WORD_LENGTH = 5;
 const ALLOWED = /^[a-záàâãéêíóôõúüç]+$/;
-
-const normalize = (word: string) =>
-  word.normalize("NFD").replace(/[\u0300-\u036F]/g, "").toLowerCase();
 
 interface Input {
   answers: string[];

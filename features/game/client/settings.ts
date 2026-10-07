@@ -1,8 +1,8 @@
 "use client";
 import { useCallback, useSyncExternalStore } from "react";
 import { readJson, writeJson } from "./storage";
+import { HIGH_CONTRAST_KEY } from "./storage-keys";
 
-export const HIGH_CONTRAST_KEY = "it_high_contrast";
 const listeners = new Set<() => void>();
 
 function apply(value: boolean) {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { errorResponse, errorStatus } from "./http";
+import { errorResponse, errorStatus, isTrustedJsonRequest } from "./http";
 
 describe("http", () => {
   it("maps error codes to statuses", () => {
@@ -17,6 +17,28 @@ describe("http", () => {
     expect(res.status).toBe(422);
     expect(await res.json()).toEqual({
       error: { code: "NOT_IN_DICTIONARY", message: "Essa palavra não é aceita" },
+    });
+  });
+
+  describe("isTrustedJsonRequest", () => {
+    const req = (headers: Record<string, string>) => new Request("http://localhost/api", { method: "POST", headers });
+
+    it("accepts JSON requests", () => {
+      expect(isTrustedJsonRequest(req({ "content-type": "application/json" }))).toBe(true);
+      expect(isTrustedJsonRequest(req({ "content-type": "application/json; charset=utf-8" }))).toBe(true);
+    });
+
+    it("rejects other content types", () => {
+      expect(isTrustedJsonRequest(req({ "content-type": "text/plain" }))).toBe(false);
+      expect(isTrustedJsonRequest(req({}))).toBe(false);
+    });
+
+    it("rejects cross-site fetches", () => {
+      const json = { "content-type": "application/json" };
+      expect(isTrustedJsonRequest(req({ ...json, "sec-fetch-site": "cross-site" }))).toBe(false);
+      expect(isTrustedJsonRequest(req({ ...json, "sec-fetch-site": "same-site" }))).toBe(false);
+      expect(isTrustedJsonRequest(req({ ...json, "sec-fetch-site": "same-origin" }))).toBe(true);
+      expect(isTrustedJsonRequest(req({ ...json, "sec-fetch-site": "none" }))).toBe(true);
     });
   });
 });

@@ -53,11 +53,13 @@ features/game/components  --->  features/game/client
 - Adulterar o token o invalida (A256GCM autentica o conteúdo) e o servidor começa um estado novo.
 - O servidor é autoritativo e não precisa de banco, sessão ou armazenamento externo.
 
+**Sem proteção contra replay.** O token é sem estado: um cookie antigo pode ser restaurado para repetir uma partida. É um trade-off aceito, por design, num jogo casual sem contas nem ranking.
+
 **Estatísticas em `localStorage`.** Sequências e distribuição não são necessárias para validar nada no servidor e não exigem conta. Ficam no dispositivo, e nenhum dado pessoal é coletado. O tema e o alto contraste também ficam no `localStorage`.
 
 ## Rodando localmente
 
-Requer Node 20 ou superior.
+Requer Node 22.12 ou superior (há um `.nvmrc`).
 
 ```bash
 npm install
@@ -66,7 +68,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Em desenvolvimento, sem `GAME_SECRET`, é usada uma chave fixa insegura. Em produção a variável é obrigatória e a aplicação falha sem ela.
+Em desenvolvimento, sem `GAME_SECRET`, é usada uma chave fixa insegura. Em produção a variável é obrigatória: sem `GAME_SECRET`, as páginas renderizam, mas as chamadas à API retornam 500.
 
 | Script | O que faz |
 | --- | --- |
@@ -79,7 +81,7 @@ Em desenvolvimento, sem `GAME_SECRET`, é usada uma chave fixa insegura. Em prod
 
 ### Deploy
 
-Na Vercel, a única configuração necessária é a variável de ambiente `GAME_SECRET`. Gere o valor com `openssl rand -base64 32`. Trocar a chave invalida as partidas em andamento, mas não afeta as estatísticas locais.
+Na Vercel, a única configuração necessária é a variável de ambiente `GAME_SECRET`. Gere o valor com `openssl rand -base64 32`. Opcionalmente, defina `NEXT_PUBLIC_SITE_URL` (por exemplo `https://seu-dominio.com`) para as URLs de metadados e Open Graph; na Vercel, o domínio de produção é detectado automaticamente. Trocar a chave invalida as partidas em andamento, mas não afeta as estatísticas locais.
 
 ## Testes e CI
 

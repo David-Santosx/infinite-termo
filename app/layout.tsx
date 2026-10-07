@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Mitr } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { HIGH_CONTRAST_KEY } from "@/features/game/client/storage-keys";
 import { Header } from "@/features/game/components/header";
 
 const mitr = Mitr({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-mitr" });
@@ -10,8 +11,12 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const description =
   "Termo sem limite diário: adivinhe palavras em português quantas vezes quiser, nos modos Termo, Dueto, Quarteto e Campanha.";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined);
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   title: { default: "Infinite Termo", template: "%s · Infinite Termo" },
   description,
   applicationName: "Infinite Termo",
@@ -43,7 +48,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(JSON.parse(localStorage.getItem("it_high_contrast")))document.documentElement.setAttribute("data-contrast","high")}catch(e){}`,
+            __html: `try{if(JSON.parse(localStorage.getItem("${HIGH_CONTRAST_KEY}")))document.documentElement.setAttribute("data-contrast","high")}catch(e){}`,
           }}
         />
       </head>

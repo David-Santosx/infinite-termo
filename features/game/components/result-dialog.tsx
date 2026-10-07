@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -25,8 +26,9 @@ interface ResultDialogProps {
 
 function titleFor(game: PublicGame) {
   if (game.status === "won") {
-    if (game.attemptsUsed <= 2) return "Genial!";
-    return game.attemptsUsed <= 4 ? "Mandou bem!" : "Ufa!";
+    const extra = game.attemptsUsed - game.boards.length;
+    if (extra <= 1) return "Genial!";
+    return extra <= 3 ? "Mandou bem!" : "Ufa!";
   }
   return game.mode === "campaign" ? "Fim da campanha" : "Não foi dessa vez";
 }
@@ -95,6 +97,7 @@ export function ResultDialog({
   onOpenChange,
   onNext,
 }: ResultDialogProps) {
+  const plural = game.boards.length > 1;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto">
@@ -102,8 +105,8 @@ export function ResultDialog({
           <DialogTitle>{titleFor(game)}</DialogTitle>
           <DialogDescription>
             {game.status === "won"
-              ? "Você acertou a palavra."
-              : "A resposta era:"}
+              ? plural ? "Você acertou as palavras." : "Você acertou a palavra."
+              : plural ? "As respostas eram:" : "A resposta era:"}
           </DialogDescription>
         </DialogHeader>
         <ResultBody game={game} onOpenChange={onOpenChange} onNext={onNext} />

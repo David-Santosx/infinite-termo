@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { PublicGame } from "@/features/game/contract";
-import { buildShareText } from "./share";
+import { buildShareText, shareResult } from "./share";
 
 const row = (statuses: ("correct" | "present" | "absent")[]) => ({ letters: ["A", "B", "C", "D", "E"], statuses });
 
@@ -43,5 +43,53 @@ describe("buildShareText", () => {
   it("mentions the campaign score", () => {
     const text = buildShareText({ ...termo, mode: "campaign", campaign: { stage: 0, round: 1, score: 3, best: 5 } }, { highContrast: false, url: "u" });
     expect(text.split("\n")[0]).toBe("Infinite Termo · Campanha (Termo) 2/6 · 3 etapas");
+  });
+
+  it("uses the singular for a single stage", () => {
+    const text = buildShareText({ ...termo, mode: "campaign", campaign: { stage: 0, round: 1, score: 1, best: 5 } }, { highContrast: false, url: "u" });
+    expect(text.split("\n")[0]).toBe("Infinite Termo · Campanha (Termo) 2/6 · 1 etapa");
+  });
+});
+
+describe("shareResult", () => {
+  const stubEnv = (opts: { share?: () => Promise<void>; writeText?: () => Promise<void>; coarse?: boolean }) => {
+    vi.stubGlobal("navigator", { share: opts.share, clipboard: { writeText: opts.writeText ?? (async () => {}) } });
+    vi.stubGlobal("matchMedia", () => ({ matches: opts.coarse ?? true }));
+  };
+
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("shares natively on touch devices", async () => {
+    stubEnv({ share: async () => {} });
+    expect(await shareResult("t")).toBe("shared");
+  });
+
+  it("reports a cancelled share without falling back", async () => {
+    const writeText = vi.fn(async () => {});
+    stubEnv({ share: async () => { throw new DOMException("cancelled", "AbortError"); }, writeText });
+    expect(await shareResult("t")).toBe("cancelled");
+    expect(writeText).not.toHaveBeenCalled();
+  });
+
+  it("falls back to the clipboard when sharing fails", async () => {
+    stubEnv({ share: async () => { throw new Error("boom"); } });
+    expect(await shareResult("t")).toBe("copied");
+  });
+
+  it("copies when native share is unavailable", async () => {
+    stubEnv({});
+    expect(await shareResult("t")).toBe("copied");
+  });
+
+  it("copies on non-touch devices even if share exists", async () => {
+    const share = vi.fn(async () => {});
+    stubEnv({ share, coarse: false });
+    expect(await shareResult("t")).toBe("copied");
+    expect(share).not.toHaveBeenCalled();
+  });
+
+  it("fails when the clipboard is unavailable", async () => {
+    stubEnv({ writeText: async () => { throw new Error("denied"); } });
+    expect(await shareResult("t")).toBe("failed");
   });
 });

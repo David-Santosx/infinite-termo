@@ -5,12 +5,11 @@ import type { PublicGame } from "@/features/game/contract";
 import { WORD_LENGTH } from "@/features/game/engine/modes";
 import type { PlayMode } from "@/features/game/engine/types";
 import { fetchGame, postGuess, postNewGame } from "./api";
+import { STATUS_LABEL } from "./labels";
 import { emptyInput, inputReducer, inputWord } from "./input";
 import type { KeyCommand } from "./key-commands";
 import { loadStats, recordGame, saveStats } from "./stats";
 import { REVEAL_DURATION_MS } from "./timing";
-
-const STATUS_LABEL = { correct: "correta", present: "em outra posição", absent: "ausente" } as const;
 
 function describeLastGuess(game: PublicGame): string {
   return game.boards
@@ -36,7 +35,7 @@ export function useGame(mode: PlayMode) {
   const [shakeKey, setShakeKey] = useState(0);
   const [announcement, setAnnouncement] = useState("");
   const starting = useRef(false);
-  const [attempt, setAttempt] = useState(0);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,7 +51,7 @@ export function useGame(mode: PlayMode) {
     return () => {
       cancelled = true;
     };
-  }, [mode, attempt]);
+  }, [mode, reloadKey]);
 
   useEffect(() => {
     if (revealingRow === null) return;
@@ -114,7 +113,7 @@ export function useGame(mode: PlayMode) {
     setGame(result.game);
   }, [mode]);
 
-  const reload = useCallback(() => setAttempt((n) => n + 1), []);
+  const reload = useCallback(() => setReloadKey((n) => n + 1), []);
 
   return { game, loadError, input, pending, revealingRow, shakeKey, announcement, finished, press, selectColumn, startNext, reload };
 }

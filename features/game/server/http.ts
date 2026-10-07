@@ -35,6 +35,12 @@ export function errorStatus(code: ApiErrorCode): number {
   }
 }
 
+export function isTrustedJsonRequest(request: Request): boolean {
+  const site = request.headers.get("sec-fetch-site");
+  if (site && site !== "same-origin" && site !== "none") return false;
+  return (request.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json");
+}
+
 export function errorResponse(code: ApiErrorCode): Response {
   const body: ApiError = { error: { code, message: MESSAGES[code] } };
   return Response.json(body, { status: errorStatus(code), headers: NO_STORE });

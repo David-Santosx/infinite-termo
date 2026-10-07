@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react";
+"use client";
 import { useTheme } from "next-themes";
 import {
   Dialog,
@@ -22,16 +22,9 @@ const THEMES = [
   { value: "dark", label: "Escuro" },
 ] as const;
 
-const noopSubscribe = () => () => {};
-
 export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
   const { theme, setTheme } = useTheme();
   const [highContrast, setHighContrast] = useHighContrast();
-  const mounted = useSyncExternalStore(
-    noopSubscribe,
-    () => true,
-    () => false,
-  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -43,23 +36,19 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
             <span className="text-sm font-medium">Tema</span>
-            <div className="h-9">
-              {mounted && (
-                <ToggleGroup
-                  type="single"
-                  variant="outline"
-                  value={theme ?? "system"}
-                  onValueChange={(v) => v && setTheme(v)}
-                  aria-label="Tema"
-                >
-                  {THEMES.map(({ value, label }) => (
-                    <ToggleGroupItem key={value} value={value}>
-                      {label}
-                    </ToggleGroupItem>
-                  ))}
-                </ToggleGroup>
-              )}
-            </div>
+            <ToggleGroup
+              type="single"
+              variant="outline"
+              value={theme ?? "system"}
+              onValueChange={(v) => v && setTheme(v)}
+              aria-label="Tema"
+            >
+              {THEMES.map(({ value, label }) => (
+                <ToggleGroupItem key={value} value={value}>
+                  {label}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
           </div>
           <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col">

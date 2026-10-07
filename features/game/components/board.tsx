@@ -2,12 +2,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { PublicBoard } from "@/features/game/contract";
 import { WORD_LENGTH } from "@/features/game/engine/modes";
-import type { GameStatus, TileStatus } from "@/features/game/engine/types";
+import { STATUS_LABEL } from "@/features/game/client/labels";
+import type { GameStatus } from "@/features/game/engine/types";
 import type { InputState } from "@/features/game/client/input";
 import { cn } from "@/lib/utils";
 import { Tile } from "./tile";
 
-const STATUS_LABEL: Record<TileStatus, string> = { correct: "correta", present: "em outra posição", absent: "ausente" };
 const BOUNCE_MS = 1300;
 
 interface BoardProps {

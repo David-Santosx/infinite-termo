@@ -14,7 +14,7 @@ function header(game: PublicGame) {
   const base = `${score}/${game.maxAttempts}`;
   if (game.mode === "campaign" && game.campaign) {
     const stage = MODE_LABELS[CAMPAIGN_STAGES[game.campaign.stage]];
-    return `Infinite Termo · Campanha (${stage}) ${base} · ${game.campaign.score} etapas`;
+    return `Infinite Termo · Campanha (${stage}) ${base} · ${game.campaign.score} ${game.campaign.score === 1 ? "etapa" : "etapas"}`;
   }
   return `Infinite Termo · ${MODE_LABELS[game.mode]} ${base}`;
 }
@@ -36,13 +36,13 @@ export function buildShareText(game: PublicGame, opts: { highContrast: boolean; 
   return [header(game), "", ...grid(game.boards, colors), "", opts.url].join("\n");
 }
 
-export async function shareResult(text: string): Promise<"shared" | "copied" | "failed"> {
+export async function shareResult(text: string): Promise<"shared" | "copied" | "cancelled" | "failed"> {
   if (typeof navigator.share === "function" && matchMedia("(pointer: coarse)").matches) {
     try {
       await navigator.share({ text });
       return "shared";
-    } catch {
-      return "failed";
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return "cancelled";
     }
   }
   try {

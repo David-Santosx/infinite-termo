@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { Github, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,14 +15,14 @@ function ExternalLink({
   children: React.ReactNode;
 }) {
   return (
-    <Link
+    <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={linkClass}
     >
       {children}
-    </Link>
+    </a>
   );
 }
 
@@ -54,22 +53,22 @@ export default function SobrePage() {
 
         <section className="flex flex-wrap justify-center gap-3">
           <Button asChild variant="outline">
-            <Link
+            <a
               href="https://github.com/David-Santosx/infinite-termo"
               target="_blank"
               rel="noopener noreferrer"
             >
               <Github /> GitHub
-            </Link>
+            </a>
           </Button>
           <Button asChild variant="outline">
-            <Link
+            <a
               href="https://instagram.com/leao.willians"
               target="_blank"
               rel="noopener noreferrer"
             >
               <Instagram /> Instagram
-            </Link>
+            </a>
           </Button>
         </section>
 

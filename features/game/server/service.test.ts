@@ -54,6 +54,18 @@ describe("service", () => {
     expect(game.boards[0].answer).toBeDefined();
   });
 
+  it("exposes only the answer of a solved board while the game is in progress", () => {
+    const { state } = getGame(emptyState(), "dueto", deps);
+    const [first, second] = state.games.dueto!.answers;
+    expect(first).not.toBe(second);
+    const r = submitGuess(state, "dueto", first, deps);
+    if (!r.ok) throw new Error(r.error);
+    expect(r.game.status).toBe("playing");
+    expect(r.game.boards[0].answer).toBeDefined();
+    expect(r.game.boards[1].answer).toBeUndefined();
+    expect(JSON.stringify(r.game)).not.toContain(second);
+  });
+
   it("refuses a new game while one is in progress", () => {
     const { state } = getGame(emptyState(), "termo", deps);
     expect(startNewGame(state, "termo", deps)).toEqual({ ok: false, error: "GAME_IN_PROGRESS" });

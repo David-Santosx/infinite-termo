@@ -1,11 +1,7 @@
+import { STATUS_LABEL } from "@/features/game/client/labels";
 import type { TileStatus } from "@/features/game/engine/types";
 import { Tile } from "./tile";
 
-const STATUS_NAME: Record<TileStatus, string> = {
-  correct: "posição certa",
-  present: "outra posição",
-  absent: "ausente",
-};
 
 interface ExampleRowProps {
   word: string;
@@ -28,7 +24,7 @@ export function ExampleRow({ word, statuses }: ExampleRowProps) {
             status={status ?? "absent"}
             index={i}
             variant={status ? "static" : "empty"}
-            label={status ? `${letter}: ${STATUS_NAME[status]}` : letter}
+            label={status ? `${letter}: ${STATUS_LABEL[status]}` : letter}
           />
         );
       })}

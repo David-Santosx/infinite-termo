@@ -5,7 +5,7 @@
   "author": "David Santos",
   "description": "Uma versão infinita do jogo Termo, onde você pode jogar sem se preocupar em esperar por uma nova palavra a cada dia.",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.12"
   },
   "scripts": {
     "dev": "next dev",

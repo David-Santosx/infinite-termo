@@ -1,11 +1,11 @@
 import { Delete } from "lucide-react";
 import type { KeyCommand } from "@/features/game/client/key-commands";
 import type { KeyStatuses } from "@/features/game/client/keyboard-state";
+import { STATUS_LABEL } from "@/features/game/client/labels";
 import type { TileStatus } from "@/features/game/engine/types";
 import { cn } from "@/lib/utils";
 
 const ROWS = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"] as const;
-const STATUS_LABEL: Record<TileStatus, string> = { correct: "correta", present: "em outra posição", absent: "ausente" };
 const REGIONS: Record<number, string[]> = {
   1: ["inset-0"],
   2: ["inset-y-0 left-0 w-1/2", "inset-y-0 right-0 w-1/2"],
