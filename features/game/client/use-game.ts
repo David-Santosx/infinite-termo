@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { toast } from "sonner";
 import type { PublicGame } from "@/features/game/contract";
 import { WORD_LENGTH } from "@/features/game/engine/modes";
@@ -35,7 +35,7 @@ export function useGame(mode: PlayMode) {
   const [revealingRow, setRevealingRow] = useState<number | null>(null);
   const [shakeKey, setShakeKey] = useState(0);
   const [announcement, setAnnouncement] = useState("");
-  const [starting, setStarting] = useState(false);
+  const starting = useRef(false);
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
@@ -100,15 +100,19 @@ export function useGame(mode: PlayMode) {
   const selectColumn = useCallback((cursor: number) => dispatch({ type: "select", cursor }), []);
 
   const startNext = useCallback(async () => {
-    if (starting) return;
-    setStarting(true);
-    const result = await postNewGame(mode);
-    setStarting(false);
+    if (starting.current) return;
+    starting.current = true;
+    let result;
+    try {
+      result = await postNewGame(mode);
+    } finally {
+      starting.current = false;
+    }
     if (!result.ok) return void toast(result.message);
     dispatch({ type: "clear" });
     setAnnouncement("");
     setGame(result.game);
-  }, [mode, starting]);
+  }, [mode]);
 
   const reload = useCallback(() => setAttempt((n) => n + 1), []);
 

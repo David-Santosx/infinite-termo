@@ -11,7 +11,6 @@ const MIN_TILE = 8;
 const ANSWER_ROOM = 22;
 const GAP_X = 16;
 const GAP_Y = 12;
-const WIDE_QUARTETO = 900;
 const PADDING_X = 24;
 
 interface BoardsProps {
@@ -42,8 +41,7 @@ function useElementSize<T extends HTMLElement>() {
   return [ref, size] as const;
 }
 
-function computeTile(width: number, height: number, count: number, maxAttempts: number, reserveAnswer: boolean) {
-  const columns = count === 4 && width >= WIDE_QUARTETO ? 4 : Math.min(count, 2);
+function fit(width: number, height: number, count: number, columns: number, maxAttempts: number, reserveAnswer: boolean) {
   const rows = Math.ceil(count / columns);
   const gap = count === 1 ? 5 : count === 2 ? 4 : 3;
   const boardWidth = (width - PADDING_X - (columns - 1) * GAP_X) / columns;
@@ -52,6 +50,13 @@ function computeTile(width: number, height: number, count: number, maxAttempts: 
   const byHeight = (boardHeight - (maxAttempts - 1) * gap) / maxAttempts;
   const tile = Math.floor(Math.min(byWidth, byHeight, MAX_TILE));
   return { columns, gap, tile: Math.max(tile, MIN_TILE) };
+}
+
+function computeTile(width: number, height: number, count: number, maxAttempts: number, reserveAnswer: boolean) {
+  const options = count === 4 ? [2, 4] : [Math.min(count, 2)];
+  return options
+    .map((columns) => fit(width, height, count, columns, maxAttempts, reserveAnswer))
+    .reduce((best, o) => (o.tile > best.tile ? o : best));
 }
 
 export function Boards({ boards, maxAttempts, status, input, revealingRow, shakeKey, onSelect }: BoardsProps) {

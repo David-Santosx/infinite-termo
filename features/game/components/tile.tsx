@@ -33,6 +33,7 @@ export function Tile({ letter, status, index, variant, selected, bounce, onSelec
       role={onSelect ? "button" : "img"}
       tabIndex={onSelect ? 0 : undefined}
       aria-label={label}
+      data-tile
       aria-pressed={onSelect ? selected : undefined}
       onClick={onSelect}
       onMouseDown={onSelect ? (e) => e.preventDefault() : undefined}
