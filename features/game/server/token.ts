@@ -16,7 +16,10 @@ export async function sealState(state: GameState, secret: string): Promise<strin
 export async function openState(token: string | undefined, secret: string): Promise<GameState> {
   if (!token) return emptyState();
   try {
-    const { payload } = await jwtDecrypt(token, await deriveKey(secret));
+    const { payload } = await jwtDecrypt(token, await deriveKey(secret), {
+      keyManagementAlgorithms: ["dir"],
+      contentEncryptionAlgorithms: ["A256GCM"],
+    });
     const parsed = gameStateSchema.safeParse(payload.state);
     return parsed.success ? (parsed.data as GameState) : emptyState();
   } catch {
