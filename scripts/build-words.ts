@@ -6,7 +6,7 @@ const WORD_LENGTH = 5;
 const ALLOWED = /^[a-záàâãéêíóôõúüç]+$/;
 
 const normalize = (word: string) =>
-  word.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  word.normalize("NFD").replace(/[\u0300-\u036F]/g, "").toLowerCase();
 
 interface Input {
   answers: string[];
