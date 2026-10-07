@@ -1,98 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import words from '@/words/playable_words.json';
-import { getSession, saveSession } from '@/lib/session';
-import { GameMode } from '@/types/Game';
+import type { NextRequest } from "next/server";
+import { isPlayMode } from "@/features/game/engine/modes";
+import { errorResponse, gameResponse, readState, withErrorHandling, writeState } from "@/features/game/server/http";
+import { getGame } from "@/features/game/server/service";
 
-const MODES: Record<GameMode, number> = {
-    termo: 1,
-    dueto: 2,
-    quarteto: 4
-};
+export function GET(request: NextRequest) {
+  return withErrorHandling(async () => {
+    const mode = request.nextUrl.searchParams.get("mode");
+    if (!isPlayMode(mode)) return errorResponse("BAD_REQUEST");
 
-function getRandomWords(wordList: string[], count: number): string[] {
-    const result: string[] = [];
-
-    for (let i = 0; i < count; i++) {
-        const index = Math.floor(Math.random() * wordList.length);
-        result.push(wordList[index]);
-    }
-
-    return result;
-}
-
-export async function GET(request: NextRequest) {
-    try {
-        const searchParams = request.nextUrl.searchParams;
-        let modeParam = searchParams.get('mode');
-
-        // Buscar sessão atual
-        const session = await getSession();
-
-        // Se não especificar modo, usar o nível atual da sessão
-        if (!modeParam) {
-            modeParam = session.currentLevel;
-        }
-
-        if (!(modeParam in MODES)) {
-            return NextResponse.json(
-                { error: 'Modo inválido. Use: termo, dueto ou quarteto' },
-                { status: 400 }
-            );
-        }
-
-        const mode = modeParam as GameMode;
-        const wordCount = MODES[mode];
-
-        if (words.length < wordCount) {
-            return NextResponse.json(
-                { error: 'Não há palavras suficientes disponíveis' },
-                { status: 500 }
-            );
-        }
-
-        // Verificar se já existem índices na sessão para o modo atual
-        let selectedWords: string[];
-        let selectedIndexes: number[];
-
-        if (session.currentGameWordIndexes &&
-            session.currentGameWordIndexes.length === wordCount &&
-            session.currentLevel === mode) {
-            // Usar índices da sessão se existirem, tiverem o tamanho correto e for o mesmo modo
-            selectedIndexes = session.currentGameWordIndexes;
-            selectedWords = selectedIndexes.map(index => words[index]);
-            session.currentGameWords = selectedWords; // Sync words for saveSession
-            // Ensure attempts is initialized
-            if (!session.currentGameAttempts) {
-                session.currentGameAttempts = [];
-                await saveSession(session);
-            }
-        } else {
-            // Gerar novas palavras e salvar índices na sessão
-            selectedIndexes = [];
-            for (let i = 0; i < wordCount; i++) {
-                const index = Math.floor(Math.random() * words.length);
-                selectedIndexes.push(index);
-            }
-            selectedWords = selectedIndexes.map(index => words[index]);
-            session.currentGameWordIndexes = selectedIndexes;
-            session.currentGameWords = selectedWords; // Sync words so saveSession doesn't overwrite indexes with stale data
-            session.currentGameAttempts = []; // Initialize attempts as empty array
-            session.currentLevel = mode; // Update current level
-            await saveSession(session);
-        }
-
-        return NextResponse.json({
-            mode,
-            words: selectedWords,
-            count: selectedWords.length
-        });
-
-    } catch (error) {
-        console.error('Erro ao buscar palavras:', error);
-
-        return NextResponse.json(
-            { error: 'Erro interno do servidor' },
-            { status: 500 }
-        );
-    }
+    const current = await readState();
+    const { state, game } = getGame(current, mode);
+    if (state !== current) await writeState(state);
+    return gameResponse(game);
+  });
 }
