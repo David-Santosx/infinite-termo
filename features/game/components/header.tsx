@@ -65,7 +65,7 @@ export function Header() {
         </div>
         <Link
           href="/"
-          className="whitespace-nowrap font-display text-xl uppercase tracking-[0.1em] sm:text-3xl sm:tracking-[0.2em]"
+          className="whitespace-nowrap font-display text-lg uppercase tracking-[0.08em] sm:text-3xl sm:tracking-[0.2em]"
         >
           Infinite Termo
         </Link>

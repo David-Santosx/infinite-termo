@@ -5,11 +5,11 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const TILES = [
-  { letter: "T", color: "#3aa394" },
-  { letter: "E", color: "#d3ad69" },
-  { letter: "R", color: "#312a2c" },
-  { letter: "M", color: "#3aa394" },
-  { letter: "O", color: "#3aa394" },
+  { letter: "T", color: "#22a663" },
+  { letter: "E", color: "#e0a43a" },
+  { letter: "R", color: "#2a2a2f" },
+  { letter: "M", color: "#22a663" },
+  { letter: "O", color: "#22a663" },
 ];
 
 export default function OpenGraphImage() {
@@ -22,7 +22,7 @@ export default function OpenGraphImage() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "#6e5c62",
+        background: "#121214",
         color: "#fff",
       }}
     >

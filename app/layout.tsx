@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Mitr } from "next/font/google";
+import { Geist, Sora } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { HIGH_CONTRAST_KEY } from "@/features/game/client/storage-keys";
 import { Header } from "@/features/game/components/header";
 
-const mitr = Mitr({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-mitr" });
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const sora = Sora({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-sora" });
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
 
 const description =
   "Termo sem limite diário: adivinhe palavras em português quantas vezes quiser, nos modos Termo, Dueto, Quarteto e Campanha.";
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#6e5c62" },
-    { media: "(prefers-color-scheme: light)", color: "#f7f4f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#121214" },
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -54,7 +54,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${mitr.variable} ${inter.variable} antialiased`}>
+      <body className={`${sora.variable} ${geist.variable} antialiased`}>
         <Providers>
           <div className="flex h-dvh flex-col">
             <Header />
