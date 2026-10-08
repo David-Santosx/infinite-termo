@@ -2,6 +2,8 @@
 
 Versão infinita do Termo: jogue quantas partidas quiser, sem esperar a palavra do dia.
 
+**[Jogar agora →](https://infinite-termo.vercel.app)**
+
 [![CI](https://github.com/David-Santosx/infinite-termo/actions/workflows/ci.yml/badge.svg)](https://github.com/David-Santosx/infinite-termo/actions/workflows/ci.yml)
 
 ![Infinite Termo no modo Dueto](docs/screenshot.png)
